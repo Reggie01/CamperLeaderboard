@@ -17,21 +17,80 @@
     <script src="react.js"></script>
     <script src="react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   </head>
   <body>
     <div id="contentText"></div>
     <script type="text/babel">
-      var App = React.createClass({
+      var Table = React.createClass({
         render: function() {
+            var users = this.props.campers || [];
+            var campers = users.map(function(user){
+                var userURL = "https://www.freecodecamp.com/" + user.username;
+                var id = parseInt(user.id, 10) + 1;
+                return <tr ><td>{id}</td><td><img src={user.img} alt={user.username} height="50" width="50" border="1" /><a target="_blank" href={userURL}>{user.username}</a></td><td>{user.recent}</td><td>{user.alltime}</td></tr>;
+            });                           
+            
+            return (
+              <div className="container">
+                <div><h3 className="text-center">Leaderboard</h3></div>
+                <table border="1" className="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Camper Name</th>
+                      <th><a >Points in past 30 days<span className="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a></th>
+                      <th><a>All time points</a></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {campers}
+                  </tbody>
+                </table>
+              
+              </div>
+            )
+        }
+      });
+      
+      var App = React.createClass({
+        getInitialState: function() {
+          return {
+            top100RecentCamperBrowniePts: ""
+          };
+        },
+        componentDidMount: function() {
+          this.serverRequest = $.get(this.props.source, function( campers ) {
+            var recentCampersBrowniePts = campers.
+                                                                  sort(function(a, b) {
+                                                                    return b["recent"] - a["recent"];
+                                                                  }).
+                                                                  map(
+                                                                  function( camper, idx ){
+                                                                    camper["id"] = idx;
+                                                                    return camper;
+                                                                  }
+                                                                 );
+            if( this.isMounted() ){
+                this.setState({
+                  top100RecentCamperBrowniePts: recentCampersBrowniePts
+                });
+            }                                                                           
+          }.bind( this ) );
+        }, 
+        componentWillUnmount: function() {
+            this.serverRequest.abort();
+        },
+        render: function() {
+         var camper = this.state.top100RecentCamperBrowniePts || [];
+         
           return (
-            <div>
-              hello
-            </div>
+            <Table campers={this.state.top100RecentCamperBrowniePts} />
           )
         }
       });
       
-      ReactDOM.render( <App />, document.getElementById("contentText") );
+      ReactDOM.render( <App source="https://fcctop100.herokuapp.com/api/fccusers/top/recent" />, document.getElementById("contentText") );
       
     </script>
   </body>
