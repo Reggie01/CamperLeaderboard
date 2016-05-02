@@ -1,7 +1,7 @@
 /* TABLE OF CONTENTS
 
     1. Basic Document Styles
-    2. 
+    2. Table
     3. Media Types
     
 */
@@ -79,14 +79,11 @@ caption {
   color: rgba(0, 0, 0, 0.54); }
 
 a {
-  color: #9C27B0;
+  color: #68EFAD;
   cursor: pointer; }
 
 p {
   margin-bottom: 1rem; }
-
-table, th, td {
-  border: 1px solid black; }
 
 table {
   width: 100%; }
@@ -101,6 +98,14 @@ textarea {
   -webkit-transition: all .5s;
   transition: all .5s; }
 
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+  border: none; }
+
 input[type="text"]:focus, textarea:focus {
   border: 1px solid;
   outline: 0;
@@ -112,10 +117,32 @@ img {
   border-radius: 50%;
   margin-right: 20px; }
 
-/* 2. 
+/* 2. Table
 -------------------------------------------------*/
 .glyphicon {
   margin-left: 10px; }
+
+th {
+  font-size: 12px;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 300; }
+
+table tbody {
+  font-size: 13px;
+  font-size: 0.8125rem;
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 500; }
+
+table td {
+  text-align: left; }
+
+table tbody td.numeric-data {
+  text-align: right;
+  vertical-align: middle; }
+
+table tbody .table-rows:hover {
+  background-color: #EEEEEE; }
 
 /* 3. Media Types
 -------------------------------------------------*/

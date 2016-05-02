@@ -15,7 +15,7 @@ My codepen version of the Markdown Previewer is at [codepen](https://codepen.io/
 ### Components
   * App - parent
   
-### APIs
+### APIs / Libraries
 * http://facebook.github.io/react/docs/getting-started.html
 
 ### Technologies Used

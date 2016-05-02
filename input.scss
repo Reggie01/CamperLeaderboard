@@ -9,11 +9,12 @@
     font-size: calculateRem($size);
 }
 
+$accent_color: #68EFAD;
 
 /* TABLE OF CONTENTS
 
     1. Basic Document Styles
-    2. 
+    2. Table
     3. Media Types
     
 */
@@ -92,16 +93,12 @@ caption {
 }
 
 a {  
-  color: #9C27B0;  
+  color: $accent_color;  
   cursor: pointer;
 }
 
 p {
     margin-bottom: 1rem;
-}
-
-table, th, td {
-  border: 1px solid black;
 }
 
 table {
@@ -118,6 +115,15 @@ textarea {
   transition: all .5s; 
 }
 
+.table-bordered>tbody>tr>td, 
+.table-bordered>tbody>tr>th, 
+.table-bordered>tfoot>tr>td, 
+.table-bordered>tfoot>tr>th, 
+.table-bordered>thead>tr>td, 
+.table-bordered>thead>tr>th {
+    border: none;
+}
+
 input[type="text"]:focus, textarea:focus {
   border: 1px solid ;
   outline: 0;
@@ -131,10 +137,36 @@ img {
   margin-right: 20px;
 }
 
-/* 2. 
+/* 2. Table
 -------------------------------------------------*/
 .glyphicon {
   margin-left: 10px;
+}
+
+th {
+    @include font-size(12px);
+    color: rgba(0,0,0,0.54);
+    font-weight: 300; 
+
+}
+
+table tbody {
+  @include font-size(13px);
+  color: rgba(0,0,0,0.87);
+  font-weight: 500;
+}
+
+table td{
+  text-align: left;
+}
+
+table tbody td.numeric-data {
+  text-align: right;
+  vertical-align: middle;
+}
+
+table tbody .table-rows:hover {
+  background-color: #EEEEEE;
 }
 
 /* 3. Media Types
@@ -144,23 +176,6 @@ img {
     @include font-size(56px);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

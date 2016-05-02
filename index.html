@@ -23,13 +23,58 @@
     <div id="contentText"></div>
     <script type="text/babel">
       var Table = React.createClass({
+        getInitialState: function() {
+            var count = 1;
+            var recent = this.props.campers[0] || [];
+            var allTime = this.props.campers[1] || [];
+            
+            return {
+                recent: recent,
+                allTime: allTime,
+                current: true                
+            }
+        },
+        handleClickAllTime: function() {
+            this.setState({
+                current: false
+            })
+                  
+            console.log( this.state );
+            
+        },
+        handleClickRecent: function() {
+            this.setState({
+                current: true
+            })
+            console.log(this.state);
+        },
+        getCampers: function(users) {
+            var count = 1;
+            
+            return users.
+                map(function(user){
+                    var userURL = "https://www.freecodecamp.com/" + user.username;
+                    var id = count++;
+                    return <tr key={id} className="table-rows"><td className="numeric-data">{id}</td><td><img src={user.img} alt={user.username} height="50" width="50" border="1" /><a target="_blank" href={userURL}>{user.username}</a></td><td className="numeric-data">{user.recent}</td><td className="numeric-data">{user.alltime}</td></tr>;
+                });
+        },
         render: function() {
-            var users = this.props.campers || [];
-            var campers = users.map(function(user){
-                var userURL = "https://www.freecodecamp.com/" + user.username;
-                var id = parseInt(user.id, 10) + 1;
-                return <tr ><td>{id}</td><td><img src={user.img} alt={user.username} height="50" width="50" border="1" /><a target="_blank" href={userURL}>{user.username}</a></td><td>{user.recent}</td><td>{user.alltime}</td></tr>;
-            });                           
+            
+            var recentCampers;
+            var recentCampersIcon;
+            var allTimeCampersIcon;
+            
+            if( this.state.current ){
+                recentCampers = this.getCampers( this.props.campers[0] );
+                recentCampersIcon = "glyphicon glyphicon-ok";
+                allTimeCampersIcon = "";
+            } else {
+                recentCampers = this.getCampers( this.props.campers[1] );
+                allTimeCampersIcon = "glyphicon glyphicon-ok";
+                recentCampersIcon = "";
+            }
+            
+            console.log(recentCampers);
             
             return (
               <div className="container">
@@ -39,12 +84,12 @@
                     <tr>
                       <th>#</th>
                       <th>Camper Name</th>
-                      <th><a >Points in past 30 days<span className="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a></th>
-                      <th><a>All time points</a></th>
+                      <th><a onClick={this.handleClickRecent} title="Leaderboard for recent top 100 campers">Points in past 30 days<span className={recentCampersIcon} aria-hidden="true"></span></a></th>
+                      <th><a onClick={this.handleClickAllTime} title="Leaderboard for alltime top 100 campers">All time points<span className={allTimeCampersIcon} aria-hidden="true"></span></a></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {campers}
+                    {recentCampers}
                   </tbody>
                 </table>
               
@@ -56,36 +101,47 @@
       var App = React.createClass({
         getInitialState: function() {
           return {
-            top100RecentCamperBrowniePts: ""
+            topRecentFCCBrowniePts: "",
+            topAllTimeFCCBrowniePts: ""
           };
         },
         componentDidMount: function() {
-          this.serverRequest = $.get(this.props.source, function( campers ) {
-            var recentCampersBrowniePts = campers.
-                                                                  sort(function(a, b) {
-                                                                    return b["recent"] - a["recent"];
-                                                                  }).
-                                                                  map(
-                                                                  function( camper, idx ){
-                                                                    camper["id"] = idx;
-                                                                    return camper;
-                                                                  }
-                                                                 );
-            if( this.isMounted() ){
-                this.setState({
-                  top100RecentCamperBrowniePts: recentCampersBrowniePts
-                });
-            }                                                                           
-          }.bind( this ) );
+          
+          this.serverRequest = $.when( $.ajax( "https://fcctop100.herokuapp.com/api/fccusers/top/recent" ), $.ajax( "https://fcctop100.herokuapp.com/api/fccusers/top/alltime") ).
+                                             done(function( a1, a2 ) {
+                                               
+                                               var recentFCCusers = "";
+                                               var alltimeFCCusers = "";
+                                           
+                                               if( a1[1] === "success" ){
+                                                 recentFCCusers = a1[0];
+                                               }
+                                               if( a2[1] === "success" ){
+                                                 alltimeFCCusers = a2[0];
+                                               }
+                                               if( recentFCCusers && alltimeFCCusers ){
+                                             
+                                                   this.setState({
+                                                     topRecentFCCBrowniePts: recentFCCusers,
+                                                     topAllTimeFCCBrowniePts: alltimeFCCusers
+                                                   });
+         
+                                               }
+                                             }.bind( this )).
+                                             fail( function (err) {                                            
+                                               console.log( err );
+                                             })
         }, 
         componentWillUnmount: function() {
             this.serverRequest.abort();
         },
         render: function() {
-         var camper = this.state.top100RecentCamperBrowniePts || [];
-         
+         var recentFCC = this.state.topRecentFCCBrowniePts || [];
+         var allTimeFCC = this.state.topAllTimeFCCBrowniePts || [];
+         var users = [ recentFCC, allTimeFCC ];
+
           return (
-            <Table campers={this.state.top100RecentCamperBrowniePts} />
+            <Table campers={users} />
           )
         }
       });
