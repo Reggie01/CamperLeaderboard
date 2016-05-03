@@ -79,7 +79,7 @@ caption {
   color: rgba(0, 0, 0, 0.54); }
 
 a {
-  color: #68EFAD;
+  color: #00796B;
   cursor: pointer; }
 
 p {
@@ -88,16 +88,6 @@ p {
 table {
   width: 100%; }
 
-textarea {
-  font-size: 18px;
-  font-size: 1.125rem;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  box-shadow: 0px 0px 10px #ccc;
-  -moz-transition: all .5s;
-  -webkit-transition: all .5s;
-  transition: all .5s; }
-
 .table-bordered > tbody > tr > td,
 .table-bordered > tbody > tr > th,
 .table-bordered > tfoot > tr > td,
@@ -105,12 +95,6 @@ textarea {
 .table-bordered > thead > tr > td,
 .table-bordered > thead > tr > th {
   border: none; }
-
-input[type="text"]:focus, textarea:focus {
-  border: 1px solid;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #83f966;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #83f966; }
 
 img {
   border: 2px solid black;
@@ -126,7 +110,14 @@ th {
   font-size: 12px;
   font-size: 0.75rem;
   color: rgba(0, 0, 0, 0.54);
-  font-weight: 300; }
+  font-weight: 300;
+  transition: all .5s ease; }
+
+th:hover {
+  color: rgba(0, 0, 0, 0.87); }
+
+th a:hover {
+  color: rgba(0, 0, 0, 0.87); }
 
 table tbody {
   font-size: 13px;
@@ -134,16 +125,45 @@ table tbody {
   color: rgba(0, 0, 0, 0.87);
   font-weight: 500; }
 
-table td {
+.table td {
   text-align: left; }
 
-table tbody td.numeric-data {
+.table tr {
+  height: 48px; }
+
+.table thead tr th {
+  text-align: left; }
+
+.table thead tr th.numeric-header {
+  text-align: right; }
+
+.table tbody td.numeric-data {
   text-align: right;
   vertical-align: middle; }
+
+.table tbody .table-rows {
+  transition: background-color 1s ease; }
 
 table tbody .table-rows:hover {
   background-color: #EEEEEE; }
 
+.table thead tr th,
+.table tbody tr td {
+  padding-right: 56px; }
+
+.table thead tr th:first-child,
+.table tbody tr td:first-child {
+  padding-left: 24px;
+  padding-right: 24px;
+  text-align: center; }
+
+span {
+  transition: all 1s ease; }
+
+/* Firefox hack to fix fieldset styling */
+@-moz-document url-prefix() {
+  fieldset {
+    display: table-cell; } }
 /* 3. Media Types
 -------------------------------------------------*/
 @media (max-width: 600px) {

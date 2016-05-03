@@ -15,8 +15,9 @@ My codepen version of the Markdown Previewer is at [codepen](https://codepen.io/
 ### Components
   * App - parent
   
-### APIs / Libraries
+### APIs / Libraries / Articles
 * http://facebook.github.io/react/docs/getting-started.html
+* https://css-tricks.com/responsive-data-tables/ - guideline for creating responsive tables
 
 ### Technologies Used
 * javascript

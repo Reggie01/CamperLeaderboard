@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<htm lang="en">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width initial-scale=1">
@@ -12,8 +12,8 @@
     <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="main.css">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="description" content="Zipline: Build a Markdown Previewer A data visualization development projects.">
-    <meta name="keywords" content="fcc, html, css, markdown previewer, javascript">
+    <meta name="description" content="Zipline: Build a Camper Leaderboard, A data visualization development projects.">
+    <meta name="keywords" content="fcc, html, css, camper leaderboard, javascript">
     <script src="react.js"></script>
     <script src="react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
@@ -38,15 +38,13 @@
             this.setState({
                 current: false
             })
-                  
-            console.log( this.state );
             
         },
         handleClickRecent: function() {
             this.setState({
                 current: true
             })
-            console.log(this.state);
+
         },
         getCampers: function(users) {
             var count = 1;
@@ -55,7 +53,7 @@
                 map(function(user){
                     var userURL = "https://www.freecodecamp.com/" + user.username;
                     var id = count++;
-                    return <tr key={id} className="table-rows"><td className="numeric-data">{id}</td><td><img src={user.img} alt={user.username} height="50" width="50" border="1" /><a target="_blank" href={userURL}>{user.username}</a></td><td className="numeric-data">{user.recent}</td><td className="numeric-data">{user.alltime}</td></tr>;
+                    return <tr key={id} className="table-rows"><td className="numeric-data" data-th="#">{id}</td><td data-th="Camper Name"><img src={user.img} alt={user.username} height="50" width="50" border="1" /><a target="_blank" href={userURL}>{user.username}</a></td><td className="numeric-data" data-th="Points in past 20 days">{user.recent}</td><td className="numeric-data" data-th="All time points">{user.alltime}</td></tr>;
                 });
         },
         render: function() {
@@ -67,32 +65,31 @@
             if( this.state.current ){
                 recentCampers = this.getCampers( this.props.campers[0] );
                 recentCampersIcon = "glyphicon glyphicon-ok";
-                allTimeCampersIcon = "";
+                allTimeCampersIcon = "glyphicon glyphicon-ok hidden";
             } else {
                 recentCampers = this.getCampers( this.props.campers[1] );
                 allTimeCampersIcon = "glyphicon glyphicon-ok";
-                recentCampersIcon = "";
+                recentCampersIcon = "glyphicon glyphicon-ok hidden";
             }
-            
-            console.log(recentCampers);
             
             return (
               <div className="container">
                 <div><h3 className="text-center">Leaderboard</h3></div>
+                <div className="table-responsive">
                 <table border="1" className="table table-bordered table-striped">
                   <thead>
                     <tr>
-                      <th>#</th>
+                      <th className="numeric-header ">#</th>
                       <th>Camper Name</th>
-                      <th><a onClick={this.handleClickRecent} title="Leaderboard for recent top 100 campers">Points in past 30 days<span className={recentCampersIcon} aria-hidden="true"></span></a></th>
-                      <th><a onClick={this.handleClickAllTime} title="Leaderboard for alltime top 100 campers">All time points<span className={allTimeCampersIcon} aria-hidden="true"></span></a></th>
+                      <th className="numeric-header "><a onClick={this.handleClickRecent} title="Leaderboard points for recent top 100 campers">Points in past 30 days<span className={recentCampersIcon}  aria-hidden="true"></span></a></th>
+                      <th className="numeric-header "><a onClick={this.handleClickAllTime} title="Leaderboard points for alltime top 100 campers">All time points<span className={allTimeCampersIcon} aria-hidden="true"></span></a></th>
                     </tr>
                   </thead>
                   <tbody>
                     {recentCampers}
                   </tbody>
                 </table>
-              
+                </div>
               </div>
             )
         }
