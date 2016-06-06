@@ -53,7 +53,7 @@
                 map(function(user){
                     var userURL = "https://www.freecodecamp.com/" + user.username;
                     var id = count++;
-                    return <tr key={id} className="table-rows"><td className="numeric-data" data-th="#">{id}</td><td data-th="Camper Name"><img src={user.img} alt={user.username} height="50" width="50" border="1" /><a target="_blank" href={userURL}>{user.username}</a></td><td className="numeric-data" data-th="Points in past 20 days">{user.recent}</td><td className="numeric-data" data-th="All time points">{user.alltime}</td></tr>;
+                    return <tr key={id} className="table-rows"><td className="numeric-data">{id}</td><td data-th="Camper Name"><img src={user.img} alt={user.username} height="50" width="50" border="1" /><a target="_blank" href={userURL}>{user.username}</a></td><td className="numeric-data">{user.recent}</td><td className="numeric-data">{user.alltime}</td></tr>;
                 });
         },
         render: function() {
